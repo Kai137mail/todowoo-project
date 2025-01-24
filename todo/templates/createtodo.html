@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="grid text-center">
+        <p class="fs-3">Новая задача</p>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <form method="post"> <!--form пишем для того, чтобы потом можно было обратиться к нашей форме. method="post" это метод передачи на сайт информации-->
+                {% csrf_token %} <!--Пишем ИМЕННО ПОСЛЕ "post". Без этого будет ошибка после ввода данных. Типа защита от межсайтовых запросов. Это он сам предлагает, когда вылезает ошибка-->
+                <div class="form-floating mb-3">
+                    <input type="text" name="title" class="form-control" id="title" placeholder="Задача 1"> <!--name= писать обязательно иначе ошибка-->
+                    <label for="title">Заголовок</label>
+                </div>
+                <div class="form-floating">
+                    <textarea name="memo" class="form-control" placeholder="Введите описание здесь" id="memo" style="height: 200px"></textarea>
+                    <label for="memo">Описание</label>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="important" class="form-check-input" id="important">
+                    <label class="form-check-label" for="important">Важно</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+<!--<h1>Создать запись</h1>-->
+<!--<h2>{{ error }}</h2> &lt;!&ndash;выведет ошибку если пароли при регистрации не совпали&ndash;&gt;-->
+<!--<form method="post"> &lt;!&ndash;form пишем для того, чтобы потом можно было обратиться к нашей форме. method="post" это метод передачи на сайт информации&ndash;&gt;-->
+<!--{% csrf_token %} &lt;!&ndash;Пишем ИМЕННО ПОСЛЕ "post". Без этого будет ошибка после ввода данных. Типа защита от межсайтовых запросов. Это он сам предлагает, когда вылезает ошибка&ndash;&gt;-->
+<!--{{ form.as_p }} &lt;!&ndash;форма ввода данных для создания пользователя. .as_p разделяет блоки для удобства читабельности&ndash;&gt;-->
+<!--<button type="submit">Создать</button> &lt;!&ndash;кнопка&ndash;&gt;-->
+<!--</form>-->
+
+
+{% endblock %}

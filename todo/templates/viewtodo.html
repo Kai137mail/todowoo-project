@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="grid text-center">
+        <p class="fs-3">Редактировать запись</p>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form method="post"> <!--form пишем для того, чтобы потом можно было обратиться к нашей форме. method="post" это метод передачи на сайт информации-->
+                {% csrf_token %} <!--Пишем ИМЕННО ПОСЛЕ "post". Без этого будет ошибка после ввода данных. Типа защита от межсайтовых запросов. Это он сам предлагает, когда вылезает ошибка-->
+                <div class="form-floating mb-3">
+                    <input type="text" name="title" class="form-control" id="title" placeholder="Задача 1" value="{{ todo.title }}"> <!--name= писать обязательно иначе ошибка-->
+                    <label for="title">Заголовок</label>
+                </div>
+
+                <div class="form-floating">
+                    <textarea name="memo" class="form-control" placeholder="Введите описание здесь" id="memo" style="height: 200px">{{ todo.memo }}</textarea>
+                    <label for="memo">Описание</label>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="important" class="form-check-input" id="important" {% if todo.important %}checked{% endif %}>
+                    <label class="form-check-label" for="important">Важно</label>
+                </div>
+                <!--скрытая кнопка для того чтобы физическую кнопку вынести за пределы формы. Т.к. у нас 3 формы с методом POST и кнопки для них, а в одной форме нельзя размещать другие формы-->
+                <button type="submit" id="save" style="display: none;"></button>
+            </form>
+        </div>
+    </div>
+
+    <!--метод для выполненеия задачи со скрытой кнопкой-->
+    {% if todo.datecompleted is None %}
+        <form method="post" action="{% url 'completetodo' todo.id %}">
+            {% csrf_token %}
+            <button type="submit" id="complete" style="display: none;"></button>
+        </form>
+    {% endif %}
+
+    <!--метод для удаления задачи со скрытой кнопкой-->
+    <form method="post" action="{% url 'deletetodo' todo.id %}">
+        {% csrf_token %}
+        <button type="submit" id="delete" style="display: none;"></button>
+    </form>
+
+    <!--физические кнопки, которые ссылаются на скрытые кнопки в формах по id. Вынесены отдельно, чтобы можно было их скомпоновать-->
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary" onclick="$('#save').click()">Сохранить</button>
+        <button type="submit" class="btn btn-success" onclick="$('#complete').click()">Выполнено</button>
+        <button type="submit" class="btn btn-danger" onclick="$('#delete').click()">Удалить</button>
+    </div>
+
+{% endblock %}
+

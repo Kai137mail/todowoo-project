@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load rupluralize %}
+{% block content %}
+
+    <div class="grid text-center">
+        {% if todos %}
+            <p class="fs-3">У вас есть {{ todos.count }} незавершенных дел{{ todos.count|rupluralize:'о ,a,' }}</p>
+        {% else %}
+            <p class="fs-3">Дел пока нет</p>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col">
+            {% if todos %}
+                <div class="list-group list-group-numbered" <!--вертикальное расположение записей в виде листа пронумерованные-->
+                    {% for todo in todos %} <!--цикл достающий все записи пользователя-->
+                        <!--тут ссылка переход на задачу. Если задача важная, выделяем ее красным цветом.-->
+                        <a href="{% url 'viewtodo' todo.id %}" class="list-group-item list-group-item-action> {% if todo.important %} list-group-item-danger {% endif %}">
+                            <!--если задача важная, выделяем заголовок задачи жирным.-->
+                            {% if todo.important %}<b>{% endif %}{{ todo.title }}{% if todo.important %}</b>{% endif %}
+                            <!--если есть описание задачи, показываем его через тире, ограничив длину 30 символами-->
+                            {% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="grid text-center">
+                    <p>У вас нет запланированных дел</p>
+                    <br>
+                    <a class="btn btn-primary" href="{% url 'createtodo' %}" role="button">Создать запись</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

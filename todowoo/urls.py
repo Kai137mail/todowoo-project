@@ -16,7 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+# импортируем вьюшки, на которые ссылаемся
+from todo import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # Авторизация на сайте
+    path('signup/', views.signupuser, name='signupuser'),
+    path('login/', views.loginuser, name='loginuser'),
+    path('logout/', views.logoutuser, name='logoutuser'),
+    # Для записей todos
+    path('', views.home, name='home'),
+    path('current/', views.currenttodos, name='currenttodos'),
+    path('completed/', views.completedtodos, name='completedtodos'),
+    path('create/', views.createtodo, name='createtodo'),
+    path('todo/<int:todo_pk>', views.viewtodo, name='viewtodo'), # страница задачи со ссылкой на primarykey в БД
+    path('todo/<int:todo_pk>/complete', views.completetodo, name='completetodo'), # страница отметки о выполнении задачи
+    path('todo/<int:todo_pk>/delete', views.deletetodo, name='deletetodo'), #
 ]

@@ -1,0 +1,29 @@
+1. В папке приложения blog создаём папку templatetags   и в ней два файла __init__.py и pluralize.py.
+
+2. Оставляем __init__.py пустым, а в pluralize.py добавляем следующий код:
+
+# Стандартный импорт библиотеки шаблонов
+from django import template
+
+# Это чтобы register.filter работал
+register = template.Library()
+
+# Расскажем django о нашем крутом фильтре
+@register.filter
+def rupluralize(value, arg="дурак,дурака,дураков"):
+    args = arg.split(",")
+    number = abs(int(value))
+    a = number % 10
+    b = number % 100
+
+    if (a == 1) and (b != 11):
+        return args[0]
+    elif (a >= 2) and (a <= 4) and ((b < 10) or (b >= 20)):
+        return args[1]
+    else:
+        return args[2]
+3. В начало файла currenttodos.html  добавляем {% load rupluralize %} . Перезапускаем сервер, чтобы Джанга увидела новый тэг, а сам код используем так:
+
+<h2>{{ todos.count }} дел{{ todos.count|rupluralize:'о ,a,' }}
+
+Почерпнул тут: https://vas3k.ru/dev/django_ru_pluralize/

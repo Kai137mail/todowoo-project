@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="grid text-center">
+        <p class="fs-3">Завершённые дела</p>
+    </div>
+
+    {% if todos %}
+        <div class="row">
+            <div class="col">
+                <div class="list-group" <!--вертикальное расположение записей в рамке-->
+                    {% for todo in todos %} <!--цикл достающий все записи пользователя-->
+                        <!--тут ссылка переход на задачу. Если задача важная, выделяем ее красным цветом.-->
+                        <a href="{% url 'viewtodo' todo.id %}" class="list-group-item list-group-item-action> {% if todo.important %} list-group-item-danger {% endif %}">
+                            <!--если задача важная, выделяем заголовок задачи жирным. И перед каждой задачей вставляем символ "☑"-->
+                            ☑ {% if todo.important %}<b>{% endif %}{{ todo.title }}{% if todo.important %}</b>{% endif %}
+                            <!--если есть описание задачи, показываем его через тире, ограничив длину 30 символами-->
+                            {% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="grid text-center">
+            <p>Завершённых дел пока нет</p>
+        </div>
+    {% endif %}
+
+{% endblock %}
